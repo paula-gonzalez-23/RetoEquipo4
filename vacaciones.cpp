@@ -82,9 +82,9 @@ void imprimirDestinos(const map<string, set<Destino>>& destinosFamilia){
 }
 
 // Función que verifica si un destino se superpone con otro destino
-bool superposicionDestino(const set<Destino>& destino, const Destino& nuevoDestino){
-    for(const auto& destino : destino){
-        if(destino.fecha[0] == nuevoDestino.fecha[0] && nuevoDestino.fecha[1] == nuevoDestino.fecha[1] && destino.fecha[2] == nuevoDestino.fecha[2]){
+bool superposicionDestino(const set<Destino>& destinos, const Destino& nuevoDestino){
+    for(const auto& destino : destinos){
+        if(destino.nombre == nuevoDestino.nombre){
             return true;
         }
     }
@@ -159,6 +159,9 @@ int main() {
                             cin>>destino.fecha[2];
                     }while(destino.fecha[2] > diasMes(destino.fecha[1], destino.fecha[0]));
                     // Validación de la fecha ingresada
+                    if(fechaUsada(destinosFamilia[familiar], destino.fecha)){
+                        cout<<"Ya existe un viaje en esta fecha. Por favor, ingrese una fecha diferente."<<endl;
+                    }
                 }while(fechaUsada(destinosFamilia[familiar], destino.fecha));
                 // Ingreso de las actividades a realizar en el destino
                 cout<<"Ingrese el número de actividades que vas a realizar: ";
@@ -174,9 +177,9 @@ int main() {
                     cout<<"El destino se superpone con un destino existente para este miembro de la familia."<<endl;
                 }else{
                     destinosFamilia[familiar].insert(destino);
+                    // Impresión de confirmación de la creación del destino
+                    imprimirAgregadoDestino(familiar, destino);
                 }
-                // Impresión de confirmación de la creación del destino
-                imprimirAgregadoDestino(familiar, destino);
                 break;
             }
             case 2:{
