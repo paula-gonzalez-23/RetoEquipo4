@@ -163,9 +163,102 @@ class Familia{
     }
 };
 
-int main(){
+int main() {
+    Familia familia;
+    while(true){
+        string nombre;
+        string nombreDestino;
+        string fechaInicio;
+        string fechaFin;
+        Destino destino;
+        vector<string> miembros;
+        vector<string> actividades;
+        int eleccion;
 
-    cout<<"Prueba"<<endl;
+        cout<<"Bienvenido al planificador de vacaciones. ¿Qué desea hacer?"<<endl;
+        cout<<"1. Agregar miembro a la familia.\n2. Planificar un nuevo viaje.\n3. Consultar destinos de un miembro de la familia.\n4. Consultar miembros que van a un mismo destino.\n5. Salir."<<endl;
+        cout<<"Ingrese una opción: "<<endl;
+            cin>>eleccion;
+        cout<<"------------------------------------------"<<endl;
+        
+        switch (eleccion) {
+            case 1:{
+                cout<<"Ingrese el nombre del miembro de la familia: "<<endl;
+                    cin>>nombre;
+                familia.agregarMiembro(nombre, ProgramadorViajes());
+                cout<<"Miembro agregado."<<endl;
+            }
+            break;
+            case 2:{
+                cout<<"Ingrese el nombre del miembro de la familia: "<<endl;
+                    cin>>nombre;
+                cout<<"Ingrese el nombre del destino: "<<endl;
+                    cin>>nombreDestino;
+                cout<<"Ingrese la fecha de inicio (AAAA/MM/DD): "<<endl;
+                    cin>>fechaInicio;
+                cout<<"Ingrese la fecha de fin (AAAA/MM/DD): "<<endl;
+                    cin>>fechaFin;
+            
+                Destino destino(nombreDestino, fechaInicio, fechaFin);
+            
+                string actividad;
+                while(true){
+                    cout<<"Ingrese una actividad para este destino ('X' para terminar): "<<endl;
+                        cin>>actividad;
+                    if(actividad == "X"){
+                        break;
+                    }
+                    destino.agregarActividad(actividad);
+                }
+            
+                cout<<"¿Desea agregar el destino a la pila o a la cola? (1: Pila, 2: Cola): "<<endl;
+                    cin>>eleccion;
+            
+                if(eleccion == 1){
+                    familia.agregarDestinoMiembro(nombre, destino, false);
+                }else if(eleccion == 2){
+                    familia.agregarDestinoMiembro(nombre, destino, true);
+                }else{
+                    cout<<"Opción no válida."<<endl;
+                }
+            }
+            break;
+            case 3:{
+                cout<<"Ingrese el nombre del miembro de la familia: "<<endl;
+                    cin>>nombre;
+                familia.consultarDestinosMiembro(nombre);
 
+                cout<<"Ingrese el nombre del destino: "<<endl;
+                    cin>>nombreDestino;
+                actividades = familia.obtenerActividadesDestino(nombreDestino);
+                cout<<"Actividades para "<<nombreDestino<<":"<<endl;
+                for(const string& actividad : actividades){
+                    cout<<actividad<<endl;
+                }
+            }
+            break;
+            case 4:{
+                cout<<"Ingrese el nombre del destino: "<<endl;
+                    cin>>nombreDestino;
+                miembros = familia.miembrosVisitandoDestino(nombreDestino);
+                cout<<"Miembros de la familia que quieren ir a "<<nombreDestino<<":"<<endl;
+                for(const string& miembro : miembros){
+                    cout<<miembro<<endl;
+                }
+
+                actividades = familia.obtenerActividadesDestino(nombreDestino);
+                cout<<"Actividades para "<<nombreDestino<<":"<<endl;
+                for(const string& actividad : actividades){
+                    cout<<actividad<<endl;
+                }
+            }
+            break;
+            case 5:{
+                return 0;
+            }
+            default:
+                cout<<"Opción no válida."<<endl;
+        }
+    }
     return 0;
 }
