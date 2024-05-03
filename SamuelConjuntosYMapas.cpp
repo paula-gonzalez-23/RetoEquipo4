@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Vacaciones
+class VacacionesConjuntosYMapas
 {
 private:
     int opcion;
@@ -19,7 +19,7 @@ private:
     */
 
 public:
-    Vacaciones(){};
+    VacacionesConjuntosYMapas(){};
 
     void anadirMiembro()
     {
@@ -174,7 +174,7 @@ public:
 
     void menu()
     {
-        cout << "Bienvenido a nuestro sistema de planificacion de Vacaciones en Familia!!\n";
+        cout << "Bienvenido al sistema de Conjuntos y Mapas!!\n";
         while (opcion != 5)
         {
             cout << "1. Agregar miembro.\n";
@@ -205,12 +205,3 @@ public:
         }
     }
 };
-
-int main()
-{
-    Vacaciones vacaciones;
-
-    vacaciones.menu();
-
-    return 0;
-}
