@@ -1,13 +1,14 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <string>
 using namespace std;
 
 class Vacaciones {
 
     private:
     
-    set<string> destinos;
+    set<string, set<string>> destinos;
     map<string, map<string, map<string, string>>> miembros_familia;
 
     public:
@@ -33,7 +34,7 @@ class Vacaciones {
             cout << "Ingrese el destino de su viaje: " << endl;
             cin >> destino;
 
-            if(destinos.find(destino) != destinos.end()){
+            if(destinos.count(destino) && destinos[destino].count(miembro)){
                 cout << "El destino ya fue agregado por otro miembro de la familia" << endl;
                 continue;
             }
@@ -42,15 +43,15 @@ class Vacaciones {
             cin >> fecha;
 
             bool fecha_superpuesta = false;
-            for (const auto& miembro_familia : miembros_familia){
-                for (const auto& destino_itinerario : miembro_familia.second){
-                    const auto& itinerario_fecha = destino_itinerario.second;
-
-                    if (itinerario_fecha.find(destino) != itinerario_fecha.end() && itinerario_fecha.at(destino) == fecha){
+            for (const auto& itinerario_fecha : miembros_familia){
+                for (const auto& destino_itinerario : itinerario_fecha.second){
+                    if (destino_itinerario.second.find(destino) != destino_itinerario.second.end() && destino_itinerario.second.at(destino) == fecha){
                         fecha_superpuesta = true;
                         break;
                     }
                 }
+
+                if (fecha_superpuesta) break;
             }
 
             if (fecha_superpuesta){
@@ -60,7 +61,7 @@ class Vacaciones {
 
             
             itinerario[miembro][destino] = fecha;
-            destinos.insert(destino);
+            destinos[destino].insert(miembro);
 
             cout << "¿Desea agregar otro destino? (s/n): " << endl;
             cin >> opcion;
@@ -166,10 +167,11 @@ int main(){
 
     Vacaciones viajes;
     int opcion;
-
+    viajes.menu();
+    
     do {
 
-        viajes.menu();
+        
         cin >> opcion;
 
         switch(opcion) {
